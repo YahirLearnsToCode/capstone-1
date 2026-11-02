@@ -51,6 +51,21 @@ public class ApplicationMainMenu {
     }
 
     private static void makePayment() {
+        System.out.println("Enter a Description for The Payment: ");
+        String paymentDescription = myScanner.nextLine().trim();
+
+        System.out.println("Who Are You Making a Payment To? ");
+        String paymentSender = myScanner.nextLine().trim();
+
+        double paymentAmount;
+        while (true) {
+            System.out.println("Type Your Payment Amount? ");
+            paymentAmount = Double.parseDouble(myScanner.nextLine().trim());
+
+            if (paymentAmount <= 0) System.out.println("Payment Amount Must Be Greater Than 0!");
+            else break;
+        }
+        writePaymentToFile(paymentDescription, paymentSender, paymentAmount);
     }
 
     private static void addDeposit() {
@@ -87,7 +102,27 @@ public class ApplicationMainMenu {
             bufWriter.close();
 
         } catch (IOException e) {
-            System.out.println("Hello");
+            System.out.println("Error Writing Deposit To File");
+        }
+    }
+
+    private static void writePaymentToFile(String paymentDescription, String paymentSender, double paymentAmount) {
+        try {
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+
+            LocalDateTime currentDateAndTime = LocalDateTime.now();
+
+            String[] dateAndTime = currentDateAndTime.toString().split("[T.]");
+
+            String currentDate = dateAndTime[0];
+            String currentTime = dateAndTime[1];
+
+            bufWriter.write(formattedFileOutput(currentDate, currentTime, paymentDescription, paymentSender, -paymentAmount));
+            bufWriter.newLine();
+            bufWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("Error Writing Payment To File");
         }
     }
 
