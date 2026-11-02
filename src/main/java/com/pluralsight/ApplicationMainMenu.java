@@ -11,7 +11,7 @@ public class ApplicationMainMenu {
 
     public static void main(String[] args) {
 
-        userMenuChoice();
+        userMainMenuChoice();
 
     }
 
@@ -29,7 +29,9 @@ public class ApplicationMainMenu {
         System.out.println(menu);
     }
 
-    public static void userMenuChoice() {
+    // Takes in user choice for Home Screen
+    public static void userMainMenuChoice() {
+        System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
 
@@ -39,7 +41,7 @@ public class ApplicationMainMenu {
             switch (userChoice) {
                 case 'D' -> addDeposit();
                 case 'P' -> makePayment();
-                case 'L' -> displayLedger();
+                case 'L' -> userLedgerMenuChoice();
                 case 'X' -> done = true;
                 default -> System.out.println("Not A Valid Choice");
             }
@@ -47,9 +49,49 @@ public class ApplicationMainMenu {
         } while (!done);
     }
 
-    private static void displayLedger() {
+    // displays choices for Ledger menu, pops up when user chooses 'L' in main menu
+    private static void displayLedgerMenu() {
+        String menu = """
+                  * LEDGER MENU *
+                  Make a Selection
+                --------------------
+                A) All
+                D) Deposits
+                P) Payments
+                R) Reports
+                H) Home""";
+
+        System.out.println(menu);
     }
 
+    // Takes in user choice for Ledger Screen
+    private static void userLedgerMenuChoice() {
+        System.out.println("Enter Your Choice: ");
+        boolean done = false;
+        do {
+
+            displayLedgerMenu();
+            char userChoice = myScanner.nextLine().trim().toUpperCase().charAt(0);
+
+            switch (userChoice) {
+                case 'A' -> LedgerReports.displayAllEntries();
+                //case 'D' -> displayDeposits();
+                //case 'P' -> displayPayments();
+                case 'H' -> done = true;
+                default -> System.out.println("Not A Valid Choice");
+            }
+
+        } while (!done);
+    }
+
+    //region Ledger Screen Menu Methods
+
+
+    //endregion
+
+    //region Home Screen Menu Methods
+
+    // prompts user for payment info
     private static void makePayment() {
         System.out.println("Enter a Description for The Payment: ");
         String paymentDescription = myScanner.nextLine().trim();
@@ -68,6 +110,7 @@ public class ApplicationMainMenu {
         writePaymentToFile(paymentDescription, paymentSender, paymentAmount);
     }
 
+    // prompts user for deposit info
     private static void addDeposit() {
         System.out.println("Enter the Description of The Deposit: ");
         String depositDescription = myScanner.nextLine().trim();
@@ -86,6 +129,7 @@ public class ApplicationMainMenu {
         writeDepositToFile(depositDescription, depositSender, depositAmount);
     }
 
+    //used to write user deposit info to file
     public static void writeDepositToFile(String depositDescription, String depositSender, double depositAmount) {
         try {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv",true));
@@ -106,6 +150,7 @@ public class ApplicationMainMenu {
         }
     }
 
+    // Used to write user payment info to file
     private static void writePaymentToFile(String paymentDescription, String paymentSender, double paymentAmount) {
         try {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
@@ -126,7 +171,10 @@ public class ApplicationMainMenu {
         }
     }
 
+    // Easy Method to properly format data written to file
     public static String formattedFileOutput(String date, String time, String description, String vendor, double amount) {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
+
+    //endregion
 }
