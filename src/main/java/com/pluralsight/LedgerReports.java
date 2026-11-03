@@ -11,7 +11,7 @@ public class LedgerReports {
     private static Scanner myScanner = new Scanner(System.in);
 
 
-//region Ledger Menu Methods
+    //region Ledger Menu Methods
     // Will display all entries in the transaction.csv file in order from newest to oldest
     public static void displayAllEntries() {
         ArrayList<String> allEntries = new ArrayList<>();
@@ -19,9 +19,9 @@ public class LedgerReports {
         try {
             BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
 
-            String input;
-            while ((input = bufReader.readLine()) != null) {
-                allEntries.add(input);
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                allEntries.add(line);
             }
 
         } catch (IOException e) {
@@ -41,13 +41,13 @@ public class LedgerReports {
         try {
             BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
 
-            String input;
-            while ((input = bufReader.readLine()) != null) {
+            String line;
+            while ((line = bufReader.readLine()) != null) {
 
-                String[] negativeCheck = input.split("\\|");
+                String[] negativeCheck = line.split("\\|");
 
                 if (!negativeCheck[4].contains("-"))
-                    allEntries.add(input);
+                    allEntries.add(line);
             }
 
         } catch (IOException e) {
@@ -67,13 +67,13 @@ public class LedgerReports {
         try {
             BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
 
-            String input;
-            while ((input = bufReader.readLine()) != null) {
+            String line;
+            while ((line = bufReader.readLine()) != null) {
 
-                String[] negativeCheck = input.split("\\|");
+                String[] negativeCheck = line.split("\\|");
 
                 if (negativeCheck[4].contains("-"))
-                    allEntries.add(input);
+                    allEntries.add(line);
             }
 
         } catch (IOException e) {
@@ -125,22 +125,47 @@ public class LedgerReports {
     }
 //endregion     Reports Menu Methods
 
+    //region Reports Menu Methods
+    // Prompts user for a vendor they want to search for and compares each file line for a match
     private static void searchByVendor() {
+        ArrayList<String> specificVendor = new ArrayList<>();
+
+        System.out.println("What Vendor Do You Want To Sort By? ");
+        String userInputVendor = myScanner.nextLine().trim();
+
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+
+                String[] lineSplit = line.split("\\|");
+                String vendor = lineSplit[3];
+
+                if (userInputVendor.equals(vendor))
+                    specificVendor.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File For Search Vendor");
+        }
+
+        System.out.println(specificVendor + "\n");
     }
 
     private static void searchByPreviousYear() {
+
     }
 
     private static void searchByYearToDate() {
-        
+
     }
 
     private static void searchByPreviousMonth() {
-        
+
     }
 
     private static void searchByMonthToDate() {
-        
-    }
 
+    }
+    //endregion
 }
