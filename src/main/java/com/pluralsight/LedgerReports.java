@@ -5,9 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class LedgerReports {
+    private static Scanner myScanner = new Scanner(System.in);
 
+
+//region Ledger Menu Methods
     // Will display all entries in the transaction.csv file in order from newest to oldest
     public static void displayAllEntries() {
         ArrayList<String> allEntries = new ArrayList<>();
@@ -88,11 +92,11 @@ public class LedgerReports {
                   * Reports MENU *
                   Make a Selection
                 --------------------
-                1) All
-                2) Deposits
-                3) Payments
-                4) Reports
-                5) Home
+                1) Month To Date
+                2) Previous Month
+                3) Year To Date
+                4) Previous Year
+                5) Search By Vendor
                 0) Back""";
 
         System.out.println(menu);
@@ -100,6 +104,43 @@ public class LedgerReports {
 
     // Takes in user choice for Reports Screen
     public static void userReportsMenuChoice() {
+        System.out.println("Enter Your Choice: ");
+        boolean done = false;
+        do {
 
+            displayReportsMenu();
+            char userChoice = myScanner.nextLine().trim().toUpperCase().charAt(0);
+
+            switch (userChoice) {
+                case '1' -> searchByMonthToDate();
+                case '2' -> searchByPreviousMonth();
+                case '3' -> searchByYearToDate();
+                case '4' -> searchByPreviousYear();
+                case '5' -> searchByVendor();
+                case '0' -> done = true;
+                default -> System.out.println("Not A Valid Choice");
+            }
+
+        } while (!done);
     }
+//endregion     Reports Menu Methods
+
+    private static void searchByVendor() {
+    }
+
+    private static void searchByPreviousYear() {
+    }
+
+    private static void searchByYearToDate() {
+        
+    }
+
+    private static void searchByPreviousMonth() {
+        
+    }
+
+    private static void searchByMonthToDate() {
+        
+    }
+
 }
