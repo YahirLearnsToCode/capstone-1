@@ -167,7 +167,7 @@ public class LedgerReports {
             String line;
             while ((line = bufReader.readLine()) != null) {
 
-                String[] lineSplit = line.split("\\|", 2); // returns [date], [other stuff](not important)
+                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
                 try {
                     int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
@@ -190,6 +190,7 @@ public class LedgerReports {
         }
     }
 
+    // Displays all transactions from current year
     private static void searchByYearToDate() {
         ArrayList<String> yearToDateTransactions = new ArrayList<>();
         int currentYear = LocalDate.now().getYear();
@@ -202,7 +203,7 @@ public class LedgerReports {
             String line;
             while ((line = bufReader.readLine()) != null) {
 
-                String[] lineSplit = line.split("\\|", 2); // returns [date], [other stuff](not important)
+                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
                 try {
                     int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
@@ -226,8 +227,42 @@ public class LedgerReports {
         }
     }
 
+    // Displays all transactions from previous month
     private static void searchByPreviousMonth() {
+        ArrayList<String> previousMonthTransactions = new ArrayList<>();
+        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = LocalDate.now().getYear();
 
+        System.out.println("Your Previous Month Transactions: ");
+
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+
+                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
+
+                try {
+                    int parsedDate = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
+                    int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
+
+                    if (parsedDate == currentMonth - 1 && parsedYear == currentYear)
+                        previousMonthTransactions.add(line);
+
+                } catch (DateTimeException e) {
+                }  //catches and skips line that can't be parsed
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File For Search Vendor");
+        }
+        if (previousMonthTransactions.isEmpty()) {
+            System.out.println("No Previous Month Activity To Show");
+        } else {
+            for (String transaction : previousMonthTransactions) {
+                System.out.println(transaction);
+            }
+        }
     }
 
     private static void searchByMonthToDate() {
