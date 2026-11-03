@@ -75,19 +75,14 @@ public class ApplicationMainMenu {
 
             switch (userChoice) {
                 case 'A' -> LedgerReports.displayAllEntries();
-                //case 'D' -> displayDeposits();
-                //case 'P' -> displayPayments();
+                case 'D' -> LedgerReports.displayDeposits();
+                case 'P' -> LedgerReports.displayPayments();
                 case 'H' -> done = true;
                 default -> System.out.println("Not A Valid Choice");
             }
 
         } while (!done);
     }
-
-    //region Ledger Screen Menu Methods
-
-
-    //endregion
 
     //region Home Screen Menu Methods
 
