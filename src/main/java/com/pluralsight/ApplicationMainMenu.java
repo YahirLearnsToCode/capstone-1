@@ -77,6 +77,7 @@ public class ApplicationMainMenu {
                 case 'A' -> LedgerReports.displayAllEntries();
                 case 'D' -> LedgerReports.displayDeposits();
                 case 'P' -> LedgerReports.displayPayments();
+                case 'R' -> LedgerReports.userReportsMenuChoice();
                 case 'H' -> done = true;
                 default -> System.out.println("Not A Valid Choice");
             }

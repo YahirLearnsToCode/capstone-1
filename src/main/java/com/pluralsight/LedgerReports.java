@@ -30,7 +30,7 @@ public class LedgerReports {
         }
     }
 
-    // Will display only negative entries in the transaction.csv
+    // Will display only positive entries in the transaction.csv
     public static void displayDeposits() {
         ArrayList<String> allEntries = new ArrayList<>();
 
@@ -56,6 +56,7 @@ public class LedgerReports {
         }
     }
 
+    // Will display only negative entries in the transaction.csv
     public static void displayPayments() {
         ArrayList<String> allEntries = new ArrayList<>();
 
@@ -79,5 +80,26 @@ public class LedgerReports {
         for (String entry : allEntries) {
             System.out.println(entry);
         }
+    }
+
+    // displays choices for Reports menu
+    public static void displayReportsMenu() {
+        String menu = """
+                  * Reports MENU *
+                  Make a Selection
+                --------------------
+                1) All
+                2) Deposits
+                3) Payments
+                4) Reports
+                5) Home
+                0) Back""";
+
+        System.out.println(menu);
+    }
+
+    // Takes in user choice for Reports Screen
+    public static void userReportsMenuChoice() {
+
     }
 }
