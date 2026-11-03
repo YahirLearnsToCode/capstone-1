@@ -16,21 +16,10 @@ public class LedgerReports {
     //region Ledger Menu Methods
     // Will display all entries in the transaction.csv file in order from newest to oldest
     public static void displayAllEntries() {
-        ArrayList<String> allEntries = new ArrayList<>();
-
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
-
-            String line;
-            while ((line = bufReader.readLine()) != null) {
-                allEntries.add(line);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error Reading File");
-        }
+        ArrayList<String> allEntries = transactionsFile(); // Stores items in transactions directly
 
         allEntries.sort(Comparator.reverseOrder());
+
         for (String entry : allEntries) {
             System.out.println(entry);
         }
@@ -40,49 +29,31 @@ public class LedgerReports {
     public static void displayDeposits() {
         ArrayList<String> allEntries = new ArrayList<>();
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] negativeCheck = line.split("\\|");
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
-
-                String[] negativeCheck = line.split("\\|");
-
-                if (!negativeCheck[4].contains("-"))
-                    allEntries.add(line);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error Reading File");
+            if (!negativeCheck[4].contains("-")) allEntries.add(line);
         }
 
         allEntries.sort(Comparator.reverseOrder());
+
         for (String entry : allEntries) {
             System.out.println(entry);
         }
+
     }
 
     // Will display only negative entries in the transaction.csv
     public static void displayPayments() {
         ArrayList<String> allEntries = new ArrayList<>();
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] negativeCheck = line.split("\\|");
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
-
-                String[] negativeCheck = line.split("\\|");
-
-                if (negativeCheck[4].contains("-"))
-                    allEntries.add(line);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error Reading File");
+            if (negativeCheck[4].contains("-")) allEntries.add(line);
         }
-
         allEntries.sort(Comparator.reverseOrder());
+
         for (String entry : allEntries) {
             System.out.println(entry);
         }
@@ -125,7 +96,7 @@ public class LedgerReports {
 
         } while (!done);
     }
-//endregion     Reports Menu Methods
+    //endregion
 
     //region Reports Menu Methods
     // Prompts user for a vendor they want to search for and compares each file line for a match
@@ -135,23 +106,16 @@ public class LedgerReports {
         System.out.println("What Vendor Do You Want To Sort By? ");
         String userInputVendor = myScanner.nextLine().trim();
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] lineSplit = line.split("\\|");
+            String vendor = lineSplit[3];
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
-
-                String[] lineSplit = line.split("\\|");
-                String vendor = lineSplit[3];
-
-                if (userInputVendor.equals(vendor))
-                    specificVendor.add(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Error Reading File For Search Vendor");
+            if (userInputVendor.equals(vendor)) specificVendor.add(line);
         }
 
-        System.out.println(specificVendor + "\n");
+        for (String v : specificVendor) {
+            System.out.println(v);
+        }
     }
 
     // Displays all transactions from previous year
@@ -161,26 +125,19 @@ public class LedgerReports {
 
         System.out.println("Your Previous Year Transactions: ");
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
+            try {
+                int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
 
-                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
+                if (parsedDate == currentYear - 1)
+                    previousYearTransactions.add(line);
 
-                try {
-                    int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
-
-                    if (parsedDate == currentYear - 1)
-                        previousYearTransactions.add(line);
-
-                } catch (DateTimeException e) {
-                }  //catches and skips line that can't be parsed
-            }
-        } catch (IOException e) {
-            System.out.println("Error Reading File For Search Vendor");
+            } catch (DateTimeException e) {
+            }  //catches and skips line that can't be parsed
         }
+
         if (previousYearTransactions.isEmpty()) {
             System.out.println("No Previous Year Activity To Show");
         } else {
@@ -197,25 +154,16 @@ public class LedgerReports {
 
         System.out.println("Your Year-To-Date Transactions: ");
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
+            try {
+                int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
 
-                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
+                if (parsedDate == currentYear) yearToDateTransactions.add(line);
 
-                try {
-                    int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
-
-                    if (parsedDate == currentYear)
-                        yearToDateTransactions.add(line);
-
-                } catch (DateTimeException e) {
-                }  //catches and skips line that can't be parsed
-            }
-        } catch (IOException e) {
-            System.out.println("Error Reading File For Search Vendor");
+            } catch (DateTimeException e) {
+            }  //catches and skips line that can't be parsed
         }
 
         if (yearToDateTransactions.isEmpty()) {
@@ -235,27 +183,20 @@ public class LedgerReports {
 
         System.out.println("Your Previous Month Transactions: ");
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
+            try {
+                int parsedDate = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
+                int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
 
-                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
+                if (parsedDate == currentMonth - 1 && parsedYear == currentYear)
+                    previousMonthTransactions.add(line);
 
-                try {
-                    int parsedDate = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
-                    int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
-
-                    if (parsedDate == currentMonth - 1 && parsedYear == currentYear)
-                        previousMonthTransactions.add(line);
-
-                } catch (DateTimeException e) {
-                }  //catches and skips line that can't be parsed
-            }
-        } catch (IOException e) {
-            System.out.println("Error Reading File For Search Vendor");
+            } catch (DateTimeException e) {
+            }  //catches and skips line that can't be parsed
         }
+
         if (previousMonthTransactions.isEmpty()) {
             System.out.println("No Previous Month Activity To Show");
         } else {
@@ -273,27 +214,19 @@ public class LedgerReports {
 
         System.out.println("Your Month-To-Date Transactions: ");
 
-        try {
-            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+        for (String line : transactionsFile()) {
+            String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
-            String line;
-            while ((line = bufReader.readLine()) != null) {
+            try {
+                int parsedMonth = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
+                int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
 
-                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
+                if (parsedMonth == currentMonth && parsedYear == currentYear) monthToDateTransactions.add(line);
 
-                try {
-                    int parsedMonth = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
-                    int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
-
-                    if (parsedMonth == currentMonth && parsedYear == currentYear)
-                        monthToDateTransactions.add(line);
-
-                } catch (DateTimeException e) {
-                }  //catches and skips line that can't be parsed
-            }
-        } catch (IOException e) {
-            System.out.println("Error Reading File For Search Vendor");
+            } catch (DateTimeException e) {
+            }  //catches and skips line that can't be parsed
         }
+
         if (monthToDateTransactions.isEmpty()) {
             System.out.println("No Previous Month Activity To Show");
         } else {
@@ -303,4 +236,19 @@ public class LedgerReports {
         }
     }
     //endregion
+
+    // Reads transactionsFile to reduce redundant code.
+    private static ArrayList<String> transactionsFile() {
+        ArrayList<String> fileRead = new ArrayList<>();
+
+        try (BufferedReader bufReader = new BufferedReader((new FileReader("src/main/resources/transactions.csv")))) {
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                fileRead.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File");
+        }
+        return fileRead;
+    }
 }
