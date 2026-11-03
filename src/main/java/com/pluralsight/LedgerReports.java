@@ -3,6 +3,8 @@ package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -152,12 +154,76 @@ public class LedgerReports {
         System.out.println(specificVendor + "\n");
     }
 
+    // Displays all transactions from previous year
     private static void searchByPreviousYear() {
+        ArrayList<String> previousYearTransactions = new ArrayList<>();
+        int currentYear = LocalDate.now().getYear();
 
+        System.out.println("Your Previous Year Transactions: ");
+
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+
+                String[] lineSplit = line.split("\\|", 2); // returns [date], [other stuff](not important)
+
+                try {
+                    int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
+
+                    if (parsedDate == currentYear - 1)
+                        previousYearTransactions.add(line);
+
+                } catch (DateTimeException e) {
+                }  //catches and skips line that can't be parsed
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File For Search Vendor");
+        }
+        if (previousYearTransactions.isEmpty()) {
+            System.out.println("No Previous Year Activity To Show");
+        } else {
+            for (String transaction : previousYearTransactions) {
+                System.out.println(transaction);
+            }
+        }
     }
 
     private static void searchByYearToDate() {
+        ArrayList<String> yearToDateTransactions = new ArrayList<>();
+        int currentYear = LocalDate.now().getYear();
 
+        System.out.println("Your Year-To-Date Transactions: ");
+
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+
+                String[] lineSplit = line.split("\\|", 2); // returns [date], [other stuff](not important)
+
+                try {
+                    int parsedDate = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
+
+                    if (parsedDate == currentYear)
+                        yearToDateTransactions.add(line);
+
+                } catch (DateTimeException e) {
+                }  //catches and skips line that can't be parsed
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File For Search Vendor");
+        }
+
+        if (yearToDateTransactions.isEmpty()) {
+            System.out.println("No Year-To-Date Activity To Show");
+        } else {
+            for (String transaction : yearToDateTransactions) {
+                System.out.println(transaction);
+            }
+        }
     }
 
     private static void searchByPreviousMonth() {
