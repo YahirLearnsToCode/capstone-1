@@ -265,8 +265,42 @@ public class LedgerReports {
         }
     }
 
+    // Displays all transactions from current month
     private static void searchByMonthToDate() {
+        ArrayList<String> monthToDateTransactions = new ArrayList<>();
+        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = LocalDate.now().getYear();
 
+        System.out.println("Your Month-To-Date Transactions: ");
+
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+
+                String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
+
+                try {
+                    int parsedMonth = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
+                    int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
+
+                    if (parsedMonth == currentMonth && parsedYear == currentYear)
+                        monthToDateTransactions.add(line);
+
+                } catch (DateTimeException e) {
+                }  //catches and skips line that can't be parsed
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File For Search Vendor");
+        }
+        if (monthToDateTransactions.isEmpty()) {
+            System.out.println("No Previous Month Activity To Show");
+        } else {
+            for (String transaction : monthToDateTransactions) {
+                System.out.println(transaction);
+            }
+        }
     }
     //endregion
 }
