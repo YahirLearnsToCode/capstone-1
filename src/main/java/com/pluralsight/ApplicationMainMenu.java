@@ -141,8 +141,7 @@ public class ApplicationMainMenu {
 
     //used to write user deposit info to file
     public static void writeDepositToFile(String depositDescription, String depositSender, double depositAmount) {
-        try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+        try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
 
             LocalDateTime currentDateAndTime = LocalDateTime.now();
 
@@ -153,7 +152,6 @@ public class ApplicationMainMenu {
 
             bufWriter.write(formattedFileOutput(currentDate, currentTime, depositDescription, depositSender, depositAmount));
             bufWriter.newLine();
-            bufWriter.close();
 
         } catch (IOException e) {
             System.out.println("Error Writing Deposit To File");
@@ -162,8 +160,7 @@ public class ApplicationMainMenu {
 
     // Used to write user payment info to file
     private static void writePaymentToFile(String paymentDescription, String paymentSender, double paymentAmount) {
-        try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+        try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
 
             LocalDateTime currentDateAndTime = LocalDateTime.now();
 
@@ -174,7 +171,6 @@ public class ApplicationMainMenu {
 
             bufWriter.write(formattedFileOutput(currentDate, currentTime, paymentDescription, paymentSender, -paymentAmount));
             bufWriter.newLine();
-            bufWriter.close();
 
         } catch (IOException e) {
             System.out.println("Error Writing Payment To File");

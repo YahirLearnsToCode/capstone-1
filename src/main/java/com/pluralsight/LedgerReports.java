@@ -80,20 +80,23 @@ public class LedgerReports {
         System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
-
             displayReportsMenu();
-            char userChoice = myScanner.nextLine().trim().toUpperCase().charAt(0);
+            String userChoice = myScanner.nextLine().trim().toUpperCase();
 
-            switch (userChoice) {
-                case '1' -> searchByMonthToDate();
-                case '2' -> searchByPreviousMonth();
-                case '3' -> searchByYearToDate();
-                case '4' -> searchByPreviousYear();
-                case '5' -> searchByVendor();
-                case '0' -> done = true;
-                default -> System.out.println("Not A Valid Choice");
+            if ((userChoice.isEmpty())) {
+                System.out.println("Please Enter A Valid Choice");
+            } else {
+                char choiceAsChar = userChoice.charAt(0);
+                switch (choiceAsChar) {
+                    case '1' -> searchByMonthToDate();
+                    case '2' -> searchByPreviousMonth();
+                    case '3' -> searchByYearToDate();
+                    case '4' -> searchByPreviousYear();
+                    case '5' -> searchByVendor();
+                    case '0' -> done = true;
+                    default -> System.out.println("Not A Valid Choice");
+                }
             }
-
         } while (!done);
     }
     //endregion
