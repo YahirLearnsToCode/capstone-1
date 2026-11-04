@@ -74,19 +74,22 @@ public class ApplicationMainMenu {
         System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
-
             displayLedgerMenu();
-            char userChoice = myScanner.nextLine().trim().toUpperCase().charAt(0);
+            String userChoice = myScanner.nextLine().trim().toUpperCase();
 
-            switch (userChoice) {
-                case 'A' -> LedgerReports.displayAllEntries();
-                case 'D' -> LedgerReports.displayDeposits();
-                case 'P' -> LedgerReports.displayPayments();
-                case 'R' -> LedgerReports.userReportsMenuChoice();
-                case 'H' -> done = true;
-                default -> System.out.println("Not A Valid Choice");
+            if ((userChoice.isEmpty())) {
+                System.out.println("Please Enter A Valid Choice");
+            } else {
+                char choiceAsChar = userChoice.charAt(0);
+                switch (choiceAsChar) {
+                    case 'A' -> LedgerReports.displayAllEntries();
+                    case 'D' -> LedgerReports.displayDeposits();
+                    case 'P' -> LedgerReports.displayPayments();
+                    case 'R' -> LedgerReports.userReportsMenuChoice();
+                    case 'H' -> done = true;
+                    default -> System.out.println("Not A Valid Choice");
+                }
             }
-
         } while (!done);
     }
 
