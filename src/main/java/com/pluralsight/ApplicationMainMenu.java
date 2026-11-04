@@ -106,16 +106,11 @@ public class ApplicationMainMenu {
         double paymentAmount;
         while (true) {
             System.out.println("Type Your Payment Amount? ");
+                paymentAmount = LedgerReports.validAmountNumber();
 
-            try {
-                paymentAmount = Double.parseDouble(myScanner.nextLine().trim());
                 if (paymentAmount <= 0)
                     System.out.println("Payment Amount Must Be Greater Than 0!");
                 else break;
-
-            } catch (NumberFormatException e) {
-                System.out.println("Please Enter A Valid Number");
-            }
         }
         writePaymentToFile(paymentDescription, paymentSender, paymentAmount);
     }
@@ -131,7 +126,7 @@ public class ApplicationMainMenu {
         double depositAmount;
         while (true) {
             System.out.println("How Much Would You Like To Deposit? ");
-            depositAmount = Double.parseDouble(myScanner.nextLine().trim());
+            depositAmount = LedgerReports.validAmountNumber();
 
             if (depositAmount <= 0) System.out.println("Deposit Amount Must Be Greater Than 0!");
             else break;
