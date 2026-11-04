@@ -110,11 +110,16 @@ public class LedgerReports {
             String[] lineSplit = line.split("\\|");
             String vendor = lineSplit[3];
 
-            if (userInputVendor.equals(vendor)) specificVendor.add(line);
+            if (vendor.toLowerCase().contains(userInputVendor.toLowerCase()))
+                specificVendor.add(line);
         }
 
-        for (String v : specificVendor) {
-            System.out.println(v);
+        if (specificVendor.isEmpty()) {
+            System.out.println("You Have No Transactions With That Vendor Name");
+        } else {
+            for (String v : specificVendor) {
+                System.out.println(v);
+            }
         }
     }
 
