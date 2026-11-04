@@ -34,16 +34,21 @@ public class ApplicationMainMenu {
         System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
-
             displayMenu();
-            char userChoice = myScanner.nextLine().trim().toUpperCase().charAt(0);
 
-            switch (userChoice) {
-                case 'D' -> addDeposit();
-                case 'P' -> makePayment();
-                case 'L' -> userLedgerMenuChoice();
-                case 'X' -> done = true;
-                default -> System.out.println("Not A Valid Choice");
+            String userChoice = myScanner.nextLine().trim().toUpperCase();
+
+            if ((userChoice.isEmpty())) {
+                System.out.println("Please Enter A Valid Choice");
+            } else {
+                char choiceAsChar = userChoice.charAt(0);
+                switch (choiceAsChar) {
+                    case 'D' -> addDeposit();
+                    case 'P' -> makePayment();
+                    case 'L' -> userLedgerMenuChoice();
+                    case 'X' -> done = true;
+                    default -> System.out.println("Not A Valid Choice");
+                }
             }
 
         } while (!done);
@@ -85,7 +90,7 @@ public class ApplicationMainMenu {
         } while (!done);
     }
 
-    //region Home Screen Menu Methods
+//region Home Screen Menu Methods
 
     // prompts user for payment info
     private static void makePayment() {
@@ -128,7 +133,7 @@ public class ApplicationMainMenu {
     //used to write user deposit info to file
     public static void writeDepositToFile(String depositDescription, String depositSender, double depositAmount) {
         try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv",true));
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
 
             LocalDateTime currentDateAndTime = LocalDateTime.now();
 
@@ -171,6 +176,5 @@ public class ApplicationMainMenu {
     public static String formattedFileOutput(String date, String time, String description, String vendor, double amount) {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
-
-    //endregion
+//endregion
 }
