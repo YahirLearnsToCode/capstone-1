@@ -55,23 +55,6 @@ public class LedgerReports {
         }
     }
 
-    // displays choices for Reports menu
-    private static void displayReportsMenu() {
-        String menu = """
-                  * Reports MENU *
-                  Make a Selection
-                --------------------
-                1) Month To Date
-                2) Previous Month
-                3) Year To Date
-                4) Previous Year
-                5) Search By Vendor
-                6) Custom Search
-                0) Back""";
-
-        System.out.println(menu);
-    }
-
     // Takes in user choice for Reports Screen
     public static void userReportsMenuChoice() {
         System.out.println("Enter Your Choice: ");
@@ -350,5 +333,30 @@ public class LedgerReports {
         fileRead.sort(Comparator.reverseOrder()); // Sorts the Transaction file before passing it
 
         return fileRead;
+    }
+
+    // displays choices for Reports menu
+    private static void displayReportsMenu() {
+        String MENU = """
+                 ▄████████████████████████████████████████████████▄
+                ████████████████████████████████████████████████████
+                ███ ╭──────────────────────────────────────────╮ ███
+                ███ │                                          │ ███
+                ███ │             * REPORTS MENU *             │ ███
+                ███ │             Make a Selection             │ ███
+                ███ │            ------------------            │ ███
+                ███ │  1) Month To Date                        │ ███
+                ███ │  2) Previous Month     6) Custom Search  │ ███
+                ███ │  3) Year To Date       0) Back           │ ███
+                ███ │  4) Previous Year                        │ ███
+                ███ │  5) Search By Vendor                     │ ███
+                ███ ╰──────────────────────────────────────────╯ ███
+                ███  ▒▒▒▒▒▒▒▒▒▒▒▒▒              (o) (o)  [PWR] ● ███
+                 ▀████████████████████████████████████████████████▀
+                                ▀██████████████████▀
+                            ▄▄████████████████████████▄▄
+                """;
+        System.out.print(MENU);
+        System.out.print("Enter Your Choice: ");
     }
 }

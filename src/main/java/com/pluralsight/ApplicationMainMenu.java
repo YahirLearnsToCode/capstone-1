@@ -14,27 +14,11 @@ public class ApplicationMainMenu {
         userMainMenuChoice();
     }
 
-    // Home screen displays menu choices for user until exit
-    public static void displayMenu() {
-        String menu = """
-                     * MENU *
-                  Make a Selection
-                 ------------------
-                D) Add Deposit
-                P) Make Payment (Debit)
-                L) Ledger
-                X) Exit""";
-
-        System.out.println(menu);
-    }
-
     // Takes in user choice for Home Screen
     public static void userMainMenuChoice() {
         boolean done = false;
         do {
             displayMenu();
-
-            System.out.print("Enter Your Choice: ");
             String userChoice = myScanner.nextLine().trim().toUpperCase();
 
             if ((userChoice.isEmpty())) {
@@ -53,24 +37,8 @@ public class ApplicationMainMenu {
         } while (!done);
     }
 
-    // displays choices for Ledger menu, pops up when user chooses 'L' in main menu
-    private static void displayLedgerMenu() {
-        String menu = """
-                  * LEDGER MENU *
-                  Make a Selection
-                --------------------
-                A) All
-                D) Deposits
-                P) Payments
-                R) Reports
-                H) Home""";
-
-        System.out.println(menu);
-    }
-
     // Takes in user choice for Ledger Screen
     private static void userLedgerMenuChoice() {
-        System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
             displayLedgerMenu();
@@ -180,7 +148,7 @@ public class ApplicationMainMenu {
     //region Screen Arts
     public static void printBanner() {
         String BANNER = """
-             
+                
                    Welcome to
                    █   █ ████      █     █████ ████  █████ █████ ████          ▄▄▄
                     █ █  █   █     █     █     █   █ █     █     █   █      ▄███████▄
@@ -191,13 +159,14 @@ public class ApplicationMainMenu {
         System.out.println(BANNER);
     }
 
-    public static void printMenuScreenAscii() {
+    // Home screen displays menu choices for user until exit
+    public static void displayMenu() {
         String MENU = """
                  ▄████████████████████████████████████████████████▄
                 ████████████████████████████████████████████████████
                 ███ ╭──────────────────────────────────────────╮ ███
                 ███ │                                          │ ███
-                ███ │                 * MENU *                 │ ███
+                ███ │              * MAIN MENU *               │ ███
                 ███ │             Make a Selection             │ ███
                 ███ │            ------------------            │ ███
                 ███ │     D) Add Deposit                       │ ███
@@ -213,6 +182,33 @@ public class ApplicationMainMenu {
                 """;
 
         System.out.print(MENU);
+        System.out.print("Enter Your Choice: ");
+    }
+
+    // displays choices for Ledger menu, pops up when user chooses 'L' in main menu
+    private static void displayLedgerMenu() {
+        String MENU = """
+                 ▄████████████████████████████████████████████████▄
+                ████████████████████████████████████████████████████
+                ███ ╭──────────────────────────────────────────╮ ███
+                ███ │                                          │ ███
+                ███ │             * LEDGER MENU *              │ ███
+                ███ │             Make a Selection             │ ███
+                ███ │            ------------------            │ ███
+                ███ │     A) All                               │ ███
+                ███ │     D) Deposits                          │ ███
+                ███ │     P) Payments                          │ ███
+                ███ │     R) Reports                           │ ███
+                ███ │     H) Home                              │ ███
+                ███ ╰──────────────────────────────────────────╯ ███
+                ███  ▒▒▒▒▒▒▒▒▒▒▒▒▒              (o) (o)  [PWR] ● ███
+                 ▀████████████████████████████████████████████████▀
+                                ▀██████████████████▀
+                            ▄▄████████████████████████▄▄
+                """;
+
+        System.out.print(MENU);
+        System.out.print("Enter Your Choice: ");
     }
     //endregion
 }
