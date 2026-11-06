@@ -24,7 +24,7 @@ public class LedgerReports {
         System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
         for (String entry : allEntries) {
-            System.out.printf(" │ %-68s │\n",entry); //padding of 68 characters
+            System.out.printf(" │ %-68s │\n", entry); //padding of 68 characters
         }
 
         System.out.println(" │                                                                      │");
@@ -46,7 +46,7 @@ public class LedgerReports {
         }
 
         for (String entry : allEntries) {
-            System.out.printf(" │ %-68s │\n",entry);
+            System.out.printf(" │ %-68s │\n", entry);
         }
 
         System.out.println(" │                                                                      │");
@@ -57,6 +57,10 @@ public class LedgerReports {
     public static void displayPayments() {
         ArrayList<String> allEntries = new ArrayList<>();
 
+        System.out.println(" ╭──────────────────────────╮");
+        System.out.println(" │    $  All Payments  $    ╰───────────────────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
+
         for (String line : transactionsFile()) {
             String[] negativeCheck = line.split("\\|");
 
@@ -64,13 +68,15 @@ public class LedgerReports {
         }
 
         for (String entry : allEntries) {
-            System.out.println(entry);
+            System.out.printf(" │ %-68s │\n", entry);
         }
+
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     // Takes in user choice for Reports Screen
     public static void userReportsMenuChoice() {
-        System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
             displayReportsMenu();
@@ -191,8 +197,12 @@ public class LedgerReports {
     private static void searchByVendor() {
         ArrayList<String> specificVendor = new ArrayList<>();
 
-        System.out.println("What Vendor Do You Want To Sort By? ");
+        String prompt = """ 
+                        ╭───────────────────────────────────────╮
+                        │  What Vendor Do You Want To Sort By?  :>   """;
+        System.out.print(prompt);
         String userInputVendor = myScanner.nextLine().trim();
+        System.out.println("╰───────────────────────────────────────╯");
 
         for (String line : transactionsFile()) {
             String[] lineSplit = line.split("\\|");
@@ -203,12 +213,24 @@ public class LedgerReports {
         }
 
         if (specificVendor.isEmpty()) {
-            System.out.println("You Have No Transactions With That Vendor Name");
+            String errorMsg = """ 
+                        ╭──────────────────────────────────────────────────╮
+                        │  You Have No Transactions With That Vendor Name  │
+                        ╰──────────────────────────────────────────────────╯
+                    """;
+            System.out.println(errorMsg);
         } else {
+            System.out.println(" ╭───────────────────────────────────────╮");
+            System.out.println(" │          $  Vendor Search  $          ╰──────────────────────────────╮");
+            System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
+
             for (String v : specificVendor) {
-                System.out.println(v);
+                System.out.printf(" │ %-68s │\n", v);
             }
         }
+
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     // Displays all transactions from previous year
@@ -216,7 +238,10 @@ public class LedgerReports {
         ArrayList<String> previousYearTransactions = new ArrayList<>();
         int currentYear = LocalDate.now().getYear();
 
-        System.out.println("Your Previous Year Transactions: ");
+        System.out.println(" ╭────────────────────────────────────────╮");
+        System.out.println(" │    $  Previous Year Transactions  $    ╰─────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
+
 
         for (String line : transactionsFile()) {
             String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
@@ -232,12 +257,20 @@ public class LedgerReports {
         }
 
         if (previousYearTransactions.isEmpty()) {
-            System.out.println("No Previous Year Activity To Show");
+            String errorMsg = """ 
+                        ╭────────────────────────────────────╮
+                        │  No Year-To-Date Activity To Show  │
+                        ╰────────────────────────────────────╯
+                    """;
+            System.out.println(errorMsg);
         } else {
             for (String transaction : previousYearTransactions) {
-                System.out.println(transaction);
+                System.out.printf(" │ %-68s │\n", transaction);
             }
         }
+
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     // Displays all transactions from current year
@@ -245,7 +278,9 @@ public class LedgerReports {
         ArrayList<String> yearToDateTransactions = new ArrayList<>();
         int currentYear = LocalDate.now().getYear();
 
-        System.out.println("Your Year-To-Date Transactions: ");
+        System.out.println(" ╭────────────────────────────────────────╮");
+        System.out.println(" │    $  Year-To-Date Transactions  $     ╰─────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
         for (String line : transactionsFile()) {
             String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
@@ -260,12 +295,20 @@ public class LedgerReports {
         }
 
         if (yearToDateTransactions.isEmpty()) {
-            System.out.println("No Year-To-Date Activity To Show");
+            String errorMsg = """ 
+                        ╭────────────────────────────────────╮
+                        │  No Year-To-Date Activity To Show  │
+                        ╰────────────────────────────────────╯
+                    """;
+            System.out.println(errorMsg);
         } else {
             for (String transaction : yearToDateTransactions) {
-                System.out.println(transaction);
+                System.out.printf(" │ %-68s │\n", transaction);
             }
         }
+
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     // Displays all transactions from previous month
@@ -275,7 +318,10 @@ public class LedgerReports {
         int previousMonth = previous.getMonthValue();
         int previousYear = previous.getYear();
 
-        System.out.println("Your Previous Month Transactions: ");
+        System.out.println(" ╭─────────────────────────────────────────╮");
+        System.out.println(" │    $  Previous Month Transactions  $    ╰────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
+
 
         for (String line : transactionsFile()) {
             String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
@@ -292,11 +338,19 @@ public class LedgerReports {
         }
 
         if (previousMonthTransactions.isEmpty()) {
-            System.out.println("No Previous Month Activity To Show");
+            String errorMsg = """ 
+                        ╭────────────────────────────────────╮
+                        │ No Previous Month Activity To Show │
+                        ╰────────────────────────────────────╯
+                    """;
+            System.out.println(errorMsg);
         } else {
             for (String transaction : previousMonthTransactions) {
-                System.out.println(transaction);
+                System.out.printf(" │ %-68s │\n", transaction);
             }
+
+            System.out.println(" │                                                                      │");
+            System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
         }
     }
 
@@ -306,7 +360,9 @@ public class LedgerReports {
         int currentMonth = LocalDate.now().getMonthValue();
         int currentYear = LocalDate.now().getYear();
 
-        System.out.println("Your Month-To-Date Transactions: ");
+        System.out.println(" ╭────────────────────────────────────────╮");
+        System.out.println(" │    $  Month-To-Date Transactions  $    ╰─────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
         for (String line : transactionsFile()) {
             String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
@@ -322,11 +378,19 @@ public class LedgerReports {
         }
 
         if (monthToDateTransactions.isEmpty()) {
-            System.out.println("No Previous Month Activity To Show");
+            String errorMsg = """ 
+                        ╭────────────────────────────────────╮
+                        │ No Month-To-Date Activity To Show  │
+                        ╰────────────────────────────────────╯
+                    """;
+            System.out.println(errorMsg);
         } else {
             for (String transaction : monthToDateTransactions) {
-                System.out.println(transaction);
+                System.out.printf(" │ %-68s │\n", transaction);
             }
+
+            System.out.println(" │                                                                      │");
+            System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
         }
     }
     //endregion
