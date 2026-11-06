@@ -12,10 +12,9 @@ public class ApplicationMainMenu {
     public static void main(String[] args) {
 
         userMainMenuChoice();
-
     }
 
-    // Home screen displays menu choices for user until exit TODO: Make menu screen fancier after main project finished
+    // Home screen displays menu choices for user until exit
     public static void displayMenu() {
         String menu = """
                      * MENU *
@@ -31,11 +30,11 @@ public class ApplicationMainMenu {
 
     // Takes in user choice for Home Screen
     public static void userMainMenuChoice() {
-        System.out.println("Enter Your Choice: ");
         boolean done = false;
         do {
             displayMenu();
 
+            System.out.print("Enter Your Choice: ");
             String userChoice = myScanner.nextLine().trim().toUpperCase();
 
             if ((userChoice.isEmpty())) {
@@ -106,11 +105,11 @@ public class ApplicationMainMenu {
         double paymentAmount;
         while (true) {
             System.out.println("Type Your Payment Amount? ");
-                paymentAmount = LedgerReports.validAmountNumber();
+            paymentAmount = LedgerReports.validAmountNumber();
 
-                if (paymentAmount <= 0)
-                    System.out.println("Payment Amount Must Be Greater Than 0!");
-                else break;
+            if (paymentAmount <= 0)
+                System.out.println("Payment Amount Must Be Greater Than 0!");
+            else break;
         }
         writePaymentToFile(paymentDescription, paymentSender, paymentAmount);
     }

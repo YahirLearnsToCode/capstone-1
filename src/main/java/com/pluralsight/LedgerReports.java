@@ -19,8 +19,6 @@ public class LedgerReports {
     public static void displayAllEntries() {
         ArrayList<String> allEntries = transactionsFile(); // Stores items in transactions directly
 
-        allEntries.sort(Comparator.reverseOrder());
-
         for (String entry : allEntries) {
             System.out.println(entry);
         }
@@ -35,8 +33,6 @@ public class LedgerReports {
 
             if (!negativeCheck[4].contains("-")) allEntries.add(line);
         }
-
-        allEntries.sort(Comparator.reverseOrder());
 
         for (String entry : allEntries) {
             System.out.println(entry);
@@ -53,7 +49,6 @@ public class LedgerReports {
 
             if (negativeCheck[4].contains("-")) allEntries.add(line);
         }
-        allEntries.sort(Comparator.reverseOrder());
 
         for (String entry : allEntries) {
             System.out.println(entry);
@@ -114,6 +109,7 @@ public class LedgerReports {
         String description = readDescriptionOrVendor("Enter A Description");
         String vendor = readDescriptionOrVendor("Enter A Vendor");
 
+        System.out.println("Enter An Amount Or Press Enter To Skip");
         Double amount = validAmountNumber();
 
         filterByCustomSearch(startDate, endDate, description, vendor, amount);
@@ -350,6 +346,8 @@ public class LedgerReports {
         } catch (IOException e) {
             System.out.println("Error Reading File");
         }
+        fileRead.sort(Comparator.reverseOrder()); // Sorts the Transaction file before passing it
+
         return fileRead;
     }
 }
