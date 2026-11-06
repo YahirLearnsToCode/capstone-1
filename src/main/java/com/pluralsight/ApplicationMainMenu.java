@@ -3,7 +3,9 @@ package com.pluralsight;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class ApplicationMainMenu {
@@ -64,15 +66,15 @@ public class ApplicationMainMenu {
 
     // prompts user for payment info
     private static void makePayment() {
-        System.out.println("Enter a Description for The Payment: ");
+        displayTransactionArt("Payment");
         String paymentDescription = myScanner.nextLine().trim();
 
-        System.out.println("Who Are You Making a Payment To? ");
+        System.out.print("Who Are You Making a Payment To? ");
         String paymentSender = myScanner.nextLine().trim();
 
         double paymentAmount;
         while (true) {
-            System.out.println("Type Your Payment Amount? ");
+            System.out.print("Type Your Payment Amount? ");
             paymentAmount = LedgerReports.validAmountNumber();
 
             if (paymentAmount <= 0)
@@ -80,25 +82,28 @@ public class ApplicationMainMenu {
             else break;
         }
         writePaymentToFile(paymentDescription, paymentSender, paymentAmount);
+        transactionSuccessfulScreen("Payment", paymentDescription, paymentSender,paymentAmount);
     }
 
     // prompts user for deposit info
     private static void addDeposit() {
-        System.out.println("Enter the Description of The Deposit: ");
+
+        displayTransactionArt("Deposit");
         String depositDescription = myScanner.nextLine().trim();
 
-        System.out.println("Who is The Deposit From? ");
+        System.out.print("Who is The Deposit From? ");
         String depositSender = myScanner.nextLine().trim();
 
         double depositAmount;
         while (true) {
-            System.out.println("How Much Would You Like To Deposit? ");
+            System.out.print("How Much Would You Like To Deposit? ");
             depositAmount = LedgerReports.validAmountNumber();
 
             if (depositAmount <= 0) System.out.println("Deposit Amount Must Be Greater Than 0!");
             else break;
         }
         writeDepositToFile(depositDescription, depositSender, depositAmount);
+        transactionSuccessfulScreen("Deposit", depositDescription, depositSender,depositAmount);
     }
 
     //used to write user deposit info to file
@@ -209,6 +214,47 @@ public class ApplicationMainMenu {
 
         System.out.print(MENU);
         System.out.print("Enter Your Choice: ");
+    }
+
+    private static void displayTransactionArt(String transactionType) {
+        String type = transactionType.toUpperCase();
+
+        System.out.println(" ╭─────────────────╮");
+        System.out.println(" │  $  " + type + "  $  ╰──────────────────────────╮");
+        System.out.println(" ├────────────────────────────────────────────┤");
+        System.out.println(" │                                            │");
+        System.out.println(" │              MAKING A " + type + "              │");
+        System.out.println(" │              ----------------              │");
+        System.out.println(" │              $ $ $ $ $ $ $ $               │");
+        System.out.println(" │                                            │");
+        System.out.println(" ╰────────────────────────────────────────────╯");
+
+        System.out.print("Enter the Description of The " + transactionType + ": ");
+    }
+
+    private static void transactionSuccessfulScreen(String transactionType, String description, String personOrCompany, double amount){
+        String type = transactionType.toUpperCase();
+        String senderOrRecipient = "";
+        String time = LocalTime.now().withNano(0).toString();
+        String date = LocalDate.now().toString();
+
+        if(transactionType.equals("Deposit")) senderOrRecipient =  "From";
+        if (transactionType.equals("Payment")) senderOrRecipient = "To";
+
+        System.out.println(" ╭─────────────────╮");
+        System.out.println(" │  $  SUCCESS  $  ╰──────────────────────────╮");
+        System.out.println(" ├────────────────────────────────────────────┤");
+        System.out.println(" │                                            │");
+        System.out.println(" │            " + type + " SUCCESSFUL!             │");
+        System.out.println(" │            -------------------             │");
+        System.out.println(" │                                            │");
+        System.out.printf(" │  %s : %-28s│\n", "Description", description);
+        System.out.printf(" │  %-11s : %-28s│\n", senderOrRecipient, personOrCompany); //%-11s Creates white space padding on the right to align with "Description"
+        System.out.printf(" │  %-11s : %-28s│\n", "Amount", String.format("$%,.2f", amount)); //%-28 pads the value to 28 characters, if it doesn't reach 28 then it will create white space on the right.
+        System.out.printf(" │  %-11s : %-28s│\n", "Date", date);
+        System.out.printf(" │  %-11s : %-28s│\n", "Time", time);
+        System.out.println(" │                                            │");
+        System.out.println(" ╰────────────────────────────────────────────╯");
     }
     //endregion
 }
