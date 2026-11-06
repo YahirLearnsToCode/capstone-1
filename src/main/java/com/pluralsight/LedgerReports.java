@@ -19,14 +19,25 @@ public class LedgerReports {
     public static void displayAllEntries() {
         ArrayList<String> allEntries = transactionsFile(); // Stores items in transactions directly
 
+        System.out.println(" ╭──────────────────────────╮");
+        System.out.println(" │  $  All Transactions  $  ╰───────────────────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
+
         for (String entry : allEntries) {
-            System.out.println(entry);
+            System.out.printf(" │ %-68s │\n",entry); //padding of 68 characters
         }
+
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     // Will display only positive entries in the transaction.csv
     public static void displayDeposits() {
         ArrayList<String> allEntries = new ArrayList<>();
+
+        System.out.println(" ╭──────────────────────────╮");
+        System.out.println(" │    $  All Deposits  $    ╰───────────────────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
         for (String line : transactionsFile()) {
             String[] negativeCheck = line.split("\\|");
@@ -35,9 +46,11 @@ public class LedgerReports {
         }
 
         for (String entry : allEntries) {
-            System.out.println(entry);
+            System.out.printf(" │ %-68s │\n",entry);
         }
 
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     // Will display only negative entries in the transaction.csv
