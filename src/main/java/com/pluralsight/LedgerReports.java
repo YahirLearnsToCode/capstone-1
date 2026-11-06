@@ -275,8 +275,9 @@ public class LedgerReports {
     // Displays all transactions from previous month
     private static void searchByPreviousMonth() {
         ArrayList<String> previousMonthTransactions = new ArrayList<>();
-        int currentMonth = LocalDate.now().getMonthValue();
-        int currentYear = LocalDate.now().getYear();
+        LocalDate previous = LocalDate.now().minusMonths(1); //Goes from Jan 2026 -> Dec 2025 if needed
+        int previousMonth = previous.getMonthValue();
+        int previousYear = previous.getYear();
 
         System.out.println("Your Previous Month Transactions: ");
 
@@ -284,10 +285,10 @@ public class LedgerReports {
             String[] lineSplit = line.split("\\|", 2); // returns [YYYY-MM-DD], [other stuff](not important)
 
             try {
-                int parsedDate = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
+                int parsedMonth = LocalDate.parse(lineSplit[0]).getMonthValue(); // getting month for each line
                 int parsedYear = LocalDate.parse(lineSplit[0]).getYear(); // getting year for each line
 
-                if (parsedDate == currentMonth - 1 && parsedYear == currentYear)
+                if (parsedMonth == previousMonth && (parsedYear == previousYear))
                     previousMonthTransactions.add(line);
 
             } catch (DateTimeException e) {
