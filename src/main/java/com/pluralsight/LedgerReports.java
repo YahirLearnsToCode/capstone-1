@@ -24,7 +24,7 @@ public class LedgerReports {
         System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
         for (String entry : allEntries) {
-            System.out.printf(" │ %-68s │\n", entry); //padding of 68 characters
+            System.out.printf(" │ %-68s │\n", colorCodeTransaction(entry)); //padding of 68 characters
         }
 
         System.out.println(" │                                                                      │");
@@ -46,7 +46,7 @@ public class LedgerReports {
         }
 
         for (String entry : allEntries) {
-            System.out.printf(" │ %-68s │\n", entry);
+            System.out.printf(" │ %-68s │\n", colorCodeTransaction(entry));
         }
 
         System.out.println(" │                                                                      │");
@@ -68,7 +68,7 @@ public class LedgerReports {
         }
 
         for (String entry : allEntries) {
-            System.out.printf(" │ %-68s │\n", entry);
+            System.out.printf(" │ %-68s │\n", colorCodeTransaction(entry));
         }
 
         System.out.println(" │                                                                      │");
@@ -103,7 +103,9 @@ public class LedgerReports {
 
     //region Reports Menu Methods
     private static void customSearch() {
-        System.out.println("Custom Search");
+        System.out.println(" ╭────────────────────────────────────────╮");
+        System.out.println(" │          $  Custom Search  $           ╰─────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
         LocalDate startDate = readDate("Enter Start Date");
         LocalDate endDate = readDate("Enter End Date");
@@ -111,8 +113,9 @@ public class LedgerReports {
         String description = readDescriptionOrVendor("Enter A Description");
         String vendor = readDescriptionOrVendor("Enter A Vendor");
 
-        System.out.println("Enter An Amount Or Press Enter To Skip");
+        System.out.print(" │ Enter An Amount Or Press Enter To Skip ->");
         Double amount = validAmountNumber();
+        System.out.println(" ╰─────────────────────────────────────────────────────────────────────╯");
 
         filterByCustomSearch(startDate, endDate, description, vendor, amount);
 
@@ -120,6 +123,10 @@ public class LedgerReports {
 
     // Outputs the lines in the file that pass the filter
     private static void filterByCustomSearch(LocalDate startDate, LocalDate endDate, String description, String vendor, double amount) {
+        System.out.println(" ╭───────────────────────────────────────╮");
+        System.out.println(" │          $  Filter Search  $          ╰──────────────────────────────╮");
+        System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
+
         for (String t : transactionsFile()) {
             String[] lineParsed = t.split("\\|");
             if (lineParsed.length < 5) continue; // skips lines that are missing pipes
@@ -142,17 +149,21 @@ public class LedgerReports {
 
                 if (amount != -1 && transactionAmount != amount) continue;
 
-                System.out.println(t); // printing out after all filters are passed
+                //System.out.println(t); // printing out after all filters are passed
+                System.out.printf(" │ %-68s │\n", colorCodeTransaction(t));
 
             } catch (NumberFormatException | DateTimeException e) {
                 // skips header and bad line of data
             }
         }
+        System.out.println(" │                                                                      │");
+        System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
 
     //Returns null if user presses enter to have no description or vendor
     public static String readDescriptionOrVendor(String promptUser) {
-        System.out.println(promptUser + " To Search By Or Press Enter To Skip ");
+        //System.out.println(promptUser + " To Search By Or Press Enter To Skip ");
+        System.out.print(" │ " + promptUser + " To Search By Or Press Enter To Skip ->");
         String userInput = myScanner.nextLine().trim();
 
         if (userInput.isEmpty())
@@ -163,22 +174,23 @@ public class LedgerReports {
 
     // checks to see if the double passed in through scanner is a legal type and not something else
     public static double validAmountNumber() {
-        String amount = myScanner.nextLine().trim();
+        while (true) {
+            String amount = myScanner.nextLine().trim();
 
-        if (amount.isEmpty()) return -1;
+            if (amount.isEmpty()) return -1;
 
-        try {
-            return Double.parseDouble(amount);
-        } catch (NumberFormatException e) {
-            System.out.println("Enter A Valid Number");
+            try {
+                return Double.parseDouble(amount);
+            } catch (NumberFormatException e) {
+                System.out.print(" │ Enter A Valid Number: ");
+            }
         }
-        return -1;
     }
 
     // Takes in a String (Start/End Date) and prompts user to either give a date or skip and returns that value as a local date
     private static LocalDate readDate(String promptUser) {
         while (true) {
-            System.out.println(promptUser + " In ISO Format YYYY-MM-DD Or Press Enter to Skip ->");
+            System.out.print(" │ " + promptUser + " In ISO Format YYYY-MM-DD Or Press Enter to Skip ->");
             String userDate = myScanner.nextLine().trim();
 
             if (userDate.isEmpty())
@@ -188,7 +200,7 @@ public class LedgerReports {
                 return LocalDate.parse(userDate);
 
             } catch (DateTimeParseException e) {
-                System.out.println("Enter The Date In ISO Format YYYY-MM-DD");
+                System.out.printf(" │ %-68s │\n", "Enter The Date In ISO Format YYYY-MM-DD");
             }
         }
     }
@@ -198,8 +210,8 @@ public class LedgerReports {
         ArrayList<String> specificVendor = new ArrayList<>();
 
         String prompt = """ 
-                        ╭───────────────────────────────────────╮
-                        │  What Vendor Do You Want To Sort By?  :>   """;
+                ╭───────────────────────────────────────╮
+                │  What Vendor Do You Want To Sort By?  :>   """;
         System.out.print(prompt);
         String userInputVendor = myScanner.nextLine().trim();
         System.out.println("╰───────────────────────────────────────╯");
@@ -225,10 +237,9 @@ public class LedgerReports {
             System.out.println(" ├──────────────────────────────────────────────────────────────────────┤");
 
             for (String v : specificVendor) {
-                System.out.printf(" │ %-68s │\n", v);
+                System.out.printf(" │ %-68s │\n", colorCodeTransaction(v));
             }
         }
-
         System.out.println(" │                                                                      │");
         System.out.println(" ╰──────────────────────────────────────────────────────────────────────╯");
     }
@@ -265,7 +276,7 @@ public class LedgerReports {
             System.out.println(errorMsg);
         } else {
             for (String transaction : previousYearTransactions) {
-                System.out.printf(" │ %-68s │\n", transaction);
+                System.out.printf(" │ %-68s │\n", colorCodeTransaction(transaction));
             }
         }
 
@@ -303,7 +314,7 @@ public class LedgerReports {
             System.out.println(errorMsg);
         } else {
             for (String transaction : yearToDateTransactions) {
-                System.out.printf(" │ %-68s │\n", transaction);
+                System.out.printf(" │ %-68s │\n", colorCodeTransaction(transaction));
             }
         }
 
@@ -346,7 +357,7 @@ public class LedgerReports {
             System.out.println(errorMsg);
         } else {
             for (String transaction : previousMonthTransactions) {
-                System.out.printf(" │ %-68s │\n", transaction);
+                System.out.printf(" │ %-68s │\n", colorCodeTransaction(transaction));
             }
 
             System.out.println(" │                                                                      │");
@@ -386,7 +397,7 @@ public class LedgerReports {
             System.out.println(errorMsg);
         } else {
             for (String transaction : monthToDateTransactions) {
-                System.out.printf(" │ %-68s │\n", transaction);
+                System.out.printf(" │ %-68s │\n", colorCodeTransaction(transaction));
             }
 
             System.out.println(" │                                                                      │");
@@ -410,6 +421,24 @@ public class LedgerReports {
         fileRead.sort(Comparator.reverseOrder()); // Sorts the Transaction file before passing it
 
         return fileRead;
+    }
+
+    private static String colorCodeTransaction(String line) {
+        String red = "\u001B[31m"; // ESC characer, 1B -> hex decimal , [ tells its instruction, 31 is color, m ends command
+        String green = "\u001B[32m";
+        String reset = "\u001B[0m"; //sets color back to normal for terminal
+        String[] lineParsed = line.split("\\|");
+
+        try {
+            double amount = Double.parseDouble((lineParsed[4]));
+            if (amount < 0) {
+                return red + line + reset;
+            } else {
+                return green + line + reset;
+            }
+        } catch (NumberFormatException e) {
+            return line;
+        }
     }
 
     // displays choices for Reports menu
