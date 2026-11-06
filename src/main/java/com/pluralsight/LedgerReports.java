@@ -117,7 +117,7 @@ public class LedgerReports {
     }
 
     // Outputs the lines in the file that pass the filter
-    private static void filterByCustomSearch(LocalDate startDate, LocalDate endDate, String description, String vendor, Double amount) {
+    private static void filterByCustomSearch(LocalDate startDate, LocalDate endDate, String description, String vendor, double amount) {
         for (String t : transactionsFile()) {
             String[] lineParsed = t.split("\\|");
             if (lineParsed.length < 5) continue; // skips lines that are missing pipes
@@ -138,7 +138,7 @@ public class LedgerReports {
                 if (description != null && !lineParsed[2].toLowerCase().contains(description.toLowerCase())) continue;
                 if (vendor != null && !lineParsed[3].toLowerCase().contains(vendor.toLowerCase())) continue;
 
-                if (amount != null && transactionAmount != amount) continue;
+                if (amount != -1 && transactionAmount != amount) continue;
 
                 System.out.println(t); // printing out after all filters are passed
 
@@ -170,7 +170,7 @@ public class LedgerReports {
         } catch (NumberFormatException e) {
             System.out.println("Enter A Valid Number");
         }
-        return 0;
+        return -1;
     }
 
     // Takes in a String (Start/End Date) and prompts user to either give a date or skip and returns that value as a local date

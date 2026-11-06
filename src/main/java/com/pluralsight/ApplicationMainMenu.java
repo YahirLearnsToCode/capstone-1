@@ -10,7 +10,7 @@ public class ApplicationMainMenu {
     private static Scanner myScanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-
+        printBanner();
         userMainMenuChoice();
     }
 
@@ -176,4 +176,43 @@ public class ApplicationMainMenu {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
 //endregion
+
+    //region Screen Arts
+    public static void printBanner() {
+        String BANNER = """
+             
+                   Welcome to
+                   █   █ ████      █     █████ ████  █████ █████ ████          ▄▄▄
+                    █ █  █   █     █     █     █   █ █     █     █   █      ▄███████▄
+                     █   ████      █     ████  █   █ █  ██ ████  ████      ▀▀▀▀▀▀▀▀▀▀▀
+                     █   █   █     █     █     █   █ █   █ █     █  █       █ █ █ █ █
+                     █   ████      █████ █████ ████   ███  █████ █   █    █████████████
+                """;
+        System.out.println(BANNER);
+    }
+
+    public static void printMenuScreenAscii() {
+        String MENU = """
+                 ▄████████████████████████████████████████████████▄
+                ████████████████████████████████████████████████████
+                ███ ╭──────────────────────────────────────────╮ ███
+                ███ │                                          │ ███
+                ███ │                 * MENU *                 │ ███
+                ███ │             Make a Selection             │ ███
+                ███ │            ------------------            │ ███
+                ███ │     D) Add Deposit                       │ ███
+                ███ │     P) Make Payment (Debit)              │ ███
+                ███ │     L) Ledger                            │ ███
+                ███ │     X) Exit                              │ ███
+                ███ │                                          │ ███
+                ███ ╰──────────────────────────────────────────╯ ███
+                ███  ▒▒▒▒▒▒▒▒▒▒▒▒▒              (o) (o)  [PWR] ● ███
+                 ▀████████████████████████████████████████████████▀
+                                ▀██████████████████▀
+                            ▄▄████████████████████████▄▄
+                """;
+
+        System.out.print(MENU);
+    }
+    //endregion
 }
